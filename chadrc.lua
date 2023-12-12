@@ -11,7 +11,7 @@ vim.api.nvim_exec([[
   autocmd FileType json nnoremap <buffer> <leader>f :%!jq '.'<CR>
 ]], false)
 
-M.ui = { theme = 'one_light' }
+M.ui = { theme = 'catppuccin' }
 M.plugins = 'custom.plugins'
 M.mappings = require "custom.mappings"
 return M
