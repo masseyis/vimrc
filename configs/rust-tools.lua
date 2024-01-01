@@ -3,7 +3,7 @@ local extension_path = vim.env.HOME .. '/Downloads/codelldb-x86_64-darwin/extens
 local codelldb_path = extension_path .. 'adapter/codelldb'
 local liblldb_path = extension_path .. 'lldb/lib/liblldb'
 local this_os = vim.loop.os_uname().sysname;
-
+local rt = require("rust-tools")
 
 -- The path in windows is different
 if this_os:find "Windows" then
@@ -93,7 +93,7 @@ local options = {
 
       -- whether the hover action window gets automatically focused
       -- default: false
-      auto_focus = false,
+      auto_focus = true,
     },
 
     -- settings for showing the crate graph based on graphviz and the dot
