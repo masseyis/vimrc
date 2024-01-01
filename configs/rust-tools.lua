@@ -1,10 +1,9 @@
-local on_attach =require("plugins.configs.lspconfig").on_attach
 local capabilities = require("plugins.configs.lspconfig").capabilities
 local extension_path = vim.env.HOME .. '/Downloads/codelldb-x86_64-darwin/extension/'
 local codelldb_path = extension_path .. 'adapter/codelldb'
 local liblldb_path = extension_path .. 'lldb/lib/liblldb'
 local this_os = vim.loop.os_uname().sysname;
-
+local rt = require("rust-tools")
 
 -- The path in windows is different
 if this_os:find "Windows" then
@@ -94,7 +93,7 @@ local options = {
 
       -- whether the hover action window gets automatically focused
       -- default: false
-      auto_focus = false,
+      auto_focus = true,
     },
 
     -- settings for showing the crate graph based on graphviz and the dot
@@ -175,7 +174,12 @@ local options = {
     },
   },
   server = {
-    on_attach = on_attach,
+    on_attach = function(_, bufnr)
+      -- Hover actions
+      vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+      -- Code action groups
+      vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+    end,
     capabilities = capabilities,
   },
 }
@@ -208,27 +212,27 @@ require('dap').configurations.rust = {
 }
 
 vim.keymap.set('n', '<Leader>ldb', function() require('dap').continue() end)
-    vim.keymap.set('n', '<Leader>ss', function() require('dap').step_over() end)
-    vim.keymap.set('n', '<Leader>si', function() require('dap').step_into() end)
-    vim.keymap.set('n', '<Leader>so', function() require('dap').step_out() end)
-    vim.keymap.set('n', '<Leader>b', function() require('dap').toggle_breakpoint() end)
-    vim.keymap.set('n', '<Leader>B', function() require('dap').set_breakpoint() end)
-    vim.keymap.set('n', '<Leader>lp', function() require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end)
-    vim.keymap.set('n', '<Leader>dr', function() require('dap').repl.open() end)
-    vim.keymap.set('n', '<Leader>dl', function() require('dap').run_last() end)
-    vim.keymap.set({'n', 'v'}, '<Leader>dh', function()
-      require('dap.ui.widgets').hover()
-    end)
-    vim.keymap.set({'n', 'v'}, '<Leader>dp', function()
-      require('dap.ui.widgets').preview()
-    end)
-    vim.keymap.set('n', '<Leader>df', function()
-      local widgets = require('dap.ui.widgets')
-      widgets.centered_float(widgets.frames)
-    end)
-    vim.keymap.set('n', '<Leader>ds', function()
-      local widgets = require('dap.ui.widgets')
-      widgets.centered_float(widgets.scopes)
-    end)
+vim.keymap.set('n', '<Leader>ss', function() require('dap').step_over() end)
+vim.keymap.set('n', '<Leader>si', function() require('dap').step_into() end)
+vim.keymap.set('n', '<Leader>so', function() require('dap').step_out() end)
+vim.keymap.set('n', '<Leader>b', function() require('dap').toggle_breakpoint() end)
+vim.keymap.set('n', '<Leader>B', function() require('dap').set_breakpoint() end)
+vim.keymap.set('n', '<Leader>lp', function() require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end)
+vim.keymap.set('n', '<Leader>dr', function() require('dap').repl.open() end)
+vim.keymap.set('n', '<Leader>dl', function() require('dap').run_last() end)
+vim.keymap.set({'n', 'v'}, '<Leader>dh', function()
+  require('dap.ui.widgets').hover()
+end)
+vim.keymap.set({'n', 'v'}, '<Leader>dp', function()
+  require('dap.ui.widgets').preview()
+end)
+vim.keymap.set('n', '<Leader>df', function()
+  local widgets = require('dap.ui.widgets')
+  widgets.centered_float(widgets.frames)
+end)
+vim.keymap.set('n', '<Leader>ds', function()
+  local widgets = require('dap.ui.widgets')
+  widgets.centered_float(widgets.scopes)
+end)
 
 return options
