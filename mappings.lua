@@ -25,7 +25,6 @@ M.abc = {
      ["<Leader>ca"] = {vim.lsp.buf.code_action},
      ["<Leader>rf"] = {vim.lsp.buf.rename},
      ["gt"] = {vim.lsp.buf.type_definition, "Go to typ definition"},
-     ["gl"] = {vim.lsp.commands["rust-analyzer.gotoLocation"],"Go to Location"},
      ["<Leader>rr"] = {vim.lsp.buf.references},
      ["<Leader>rc"] = {vim.lsp.buf.clear_references},
      ["<Leader>ri"] = {vim.lsp.buf.incoming_calls},
